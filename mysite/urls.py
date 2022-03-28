@@ -8,12 +8,13 @@ from django.views.static import serve
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SITE_ROOT = os.path.join(BASE_DIR, 'site')
 
-from django.contrib import admin
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('polls/', include('polls.urls')),
+    path('', include('home.urls')),
+    path('hello/', include('hello.urls')),
     url(r'^site/(?P<path>.*)$', serve,
         {'document_root': SITE_ROOT, 'show_indexes': True},
         name='site_path'
-    ),
+        ),
 ]
