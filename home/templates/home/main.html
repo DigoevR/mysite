@@ -5,8 +5,15 @@
   </head>
   <body>
     <ul>
-      <li><p><a href="{% url 'polls:index' %}">A Polls Application</a></p></li>
-      <li><p><a href="{% url 'hello:view_counter' %}">Test the session</a></p></li>
+      <li>
+        <p><a href="{% url 'polls:index' %}">A Polls Application</a></p>
+      </li>
+      <li>
+        <p><a href="{% url 'hello:view_counter' %}">Test the session</a></p>
+      </li>
+      <li>
+        <p><a href={% url 'autos:auto-list' %}>Autos CRUD</a></p>
+      </li>
     </ul>
   </body>
 </html>

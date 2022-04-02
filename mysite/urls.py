@@ -13,6 +13,8 @@ urlpatterns = [
     path('polls/', include('polls.urls')),
     path('', include('home.urls')),
     path('hello/', include('hello.urls')),
+    path('accounts/', include('django.contrib.auth.urls')),
+    path('autos/', include('autos.urls')),
     url(r'^site/(?P<path>.*)$', serve,
         {'document_root': SITE_ROOT, 'show_indexes': True},
         name='site_path'

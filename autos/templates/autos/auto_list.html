@@ -1,0 +1,21 @@
+{% extends 'base_bootstrap.html' %}
+{% block content %}
+  <h1>Autos List</h1>
+  {% if auto_list %}
+  <ul>
+    {% for auto in auto_list %}
+      <li>{{auto|escape}} ({{auto.make|escape}}) (<a href='{% url 'autos:auto-update' auto.id %}'>Update</a> | <a href='{% url 'autos:auto-delete' auto.id %}'>Delete</a>)</li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>There are no autos in the library.</p>
+  {% endif %}
+
+  {% if make_count == 0 %}
+    <p>Please add a make before you add an auto</p>
+  {% else %}
+    <p><a href='{% url 'autos:auto-create' %}'>Add an auto</a></p>
+  {% endif %}
+
+  <p>(<a href='{% url 'autos:make-list' %}'>View makes</a> ({{make_count}}) | <a href='{% url 'autos:make-create' %}'>Add a make</a>)</p>
+{% endblock content %}
