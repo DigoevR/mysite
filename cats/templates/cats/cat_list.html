@@ -1,0 +1,27 @@
+{% extends 'base_bootstrap.html' %}
+{% block content %}
+    <h1>Cats List</h1>
+    {% if cat_list%}
+        <ul>
+            {% for cat in cat_list %}
+                <li>{{cat}} ({{cat.breed}}) (<a href='{% url 'cats:update_cat' cat.id %}'>Update</a> | <a href='{% url 'cats:delete_cat' cat.id %}'>Delete</a>)</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>There are no cats in the library.</p>
+    {% endif %}
+    {% if breed_count %}
+        <p>    
+            <a href="{% url 'cats:create_cat' %}">Add a cat</a>
+        </p>
+    {% else %}
+        <p>    
+            Please add a breed before you add a cat. 
+        </p>
+    {% endif %}
+      <p>
+        <a href="{% url 'cats:list_breed' %}">View breeds</a> ({{breed_count}}) | 
+          <a href="{% url 'cats:create_breed' %}">Add a breed</a>
+        </p>
+    
+{% endblock content %}

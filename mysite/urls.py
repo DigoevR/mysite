@@ -15,6 +15,7 @@ urlpatterns = [
     path('hello/', include('hello.urls')),
     path('accounts/', include('django.contrib.auth.urls')),
     path('autos/', include('autos.urls')),
+    path('cats/', include('cats.urls')),
     url(r'^site/(?P<path>.*)$', serve,
         {'document_root': SITE_ROOT, 'show_indexes': True},
         name='site_path'
