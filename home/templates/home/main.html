@@ -1,22 +1,7 @@
-<!DOCTPYPE html>
-<html>
-  <head>
-    <title>Main</title>
-  </head>
-  <body>
-    <ul>
-      <li>
-        <p><a href="{% url 'polls:index' %}">A Polls Application</a></p>
-      </li>
-      <li>
-        <p><a href="{% url 'hello:view_counter' %}">Test the session</a></p>
-      </li>
-      <li>
-        <p><a href={% url 'autos:auto-list' %}>Autos CRUD</a></p>
-      </li>
-      <li>
-        <p><a href={% url 'cats:list_cat' %}>Cats CRUD</a></p>
-      </li>
-    </ul>
-  </body>
-</html>
+{% extends "base_bootstrap.html" %}
+{% block content %}
+    <h1>Welcome to {{ settings.APP_NAME }}</h1>
+    <p>
+    Hello world.
+    </p>
+{% endblock content %}
