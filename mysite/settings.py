@@ -46,7 +46,11 @@ INSTALLED_APPS = [
     'rest_framework', 
     'social_django',  
     'taggit',
-    'home.apps.HomeConfig',  
+    
+    'home.apps.HomeConfig', 
+    'autos.apps.AutosConfig',
+    'cats.apps.CatsConfig',
+    'ads.apps.AdsConfig',
 ]
 
 # When we get to crispy forms :)

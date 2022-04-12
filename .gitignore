@@ -4,3 +4,4 @@
 *.ini
 .*
 db.py
+github_settings.py
