@@ -8,4 +8,7 @@ urlpatterns = [
     path('create', views.AdsCreateView.as_view(), name='ad_create'),
     path('<int:pk>/update', views.AdsUpdateView.as_view(), name='ad_update'),
     path('<int:pk>/delete', views.AdsDeleteView.as_view(), name='ad_delete'),
+    path('<int:pk>/picture', views.stream_file, name='ad_picture'),
+    path('<int:ad_id>/comment/create', views.CommentCreateView.as_view(), name='ad_comment_create'),
+    path('comment/<int:pk>/delete', views.CommentDeleteView.as_view(), name='ad_comment_delete')
 ]
