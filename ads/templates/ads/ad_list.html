@@ -3,6 +3,13 @@
 <h1>Ads</h1>
 <p>
 {% if ad_list %}
+<div style="float:right">
+  <form>
+    <input type="text" placeholder="Search.." name="search" {% if  search  %}value="{{ search }}"{% endif %}>
+    <button type="submit"><i class="fa fa-search"></i></button>
+    <a href="{% url 'ads:ad_list' %}"><i class="fa fa-undo"></i></a>
+  </form>
+</div>
 <ul>
   {% for ad in ad_list %}
     <li>

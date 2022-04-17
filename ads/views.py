@@ -8,18 +8,25 @@ from django.views import View
 from .forms import CreateForm, CommentForm
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
+from django.db.models import Q
 
 class AdsListView(OwnerListView):
     model = Ad
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         favorites = []
         if self.request.user.is_authenticated:
             favorites = self.request.user.favorite_ads.values_list('id', flat=True)
         context["favorites"] = favorites
+        context["search"] = self.search
         return context
     
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        self.search = self.request.GET.get('search', False)
+        if self.search:   
+            queryset = queryset.filter(Q(title__contains=self.search) | Q(text__contains=self.search))
+        return queryset
 
 
 class AdsDetailView(OwnerDetailView):
