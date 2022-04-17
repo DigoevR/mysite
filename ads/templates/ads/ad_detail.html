@@ -37,6 +37,7 @@
 {{ ad.text }}
 </p>
 <p>
+  Tags: {% for tag in ad.tags.all %}<span style="border:1px grey solid; background-color: LightGreen;">{{tag.name}}</span> {% endfor %}
 </p>
 <p>
 Price: ${{ ad.price }}

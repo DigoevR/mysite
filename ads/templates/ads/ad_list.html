@@ -1,4 +1,5 @@
 {% extends "base_menu.html" %}
+{% load humanize %}
 {% block content %}
 <h1>Ads</h1>
 <p>
@@ -40,6 +41,9 @@
         </span>
         </a>
         {% endif %}
+        <br>
+        <div style="left:10 px">{{ ad.text|truncatechars:50 }}</div>
+        <small> posted by {{ ad.owner }} {{ad.created_at|naturaltime}}</small>
     </li>
   {% endfor %}
 </ul>

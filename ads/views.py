@@ -25,7 +25,10 @@ class AdsListView(OwnerListView):
         queryset = super().get_queryset()
         self.search = self.request.GET.get('search', False)
         if self.search:   
-            queryset = queryset.filter(Q(title__contains=self.search) | Q(text__contains=self.search))
+            queryset = queryset.filter(Q(title__contains=self.search) |
+                                        Q(text__contains=self.search) |
+                                        Q(tags__name__in=self.search.split(','))
+                                        )
         return queryset
 
 
@@ -63,6 +66,7 @@ class AdsCreateView(LoginRequiredMixin, View):
             ad = form.save(commit=False)
             ad.owner = request.user
             ad.save()
+            form.save_m2m()
             return redirect(self.success_url)
         else:
             context = {'form': form}
@@ -82,8 +86,7 @@ class AdsUpdateView(LoginRequiredMixin, View):
         ad = get_object_or_404(Ad.objects.filter(owner=request.user), pk=pk)
         form = CreateForm(request.POST, request.FILES or None, instance=ad)
         if form.is_valid():
-            ad = form.save(commit=False)
-            ad.save()
+            form.save()
             return redirect(self.success_url)
         else:
             context = {'form': form}
