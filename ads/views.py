@@ -6,6 +6,8 @@ from .models import Ad, Comment, Favorite
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from .forms import CreateForm, CommentForm
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
 class AdsListView(OwnerListView):
     model = Ad
@@ -108,14 +110,14 @@ class CommentDeleteView(OwnerDeleteView):
         ad = self.object.ad
         return reverse_lazy('ads:ad_detail', args=[ad.id])
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class AddFavoriteView(LoginRequiredMixin, View):
     def post(self, request, pk):
         ad = get_object_or_404(Ad, pk=pk)
         favorite, created = Favorite.objects.get_or_create(ad=ad, user=request.user)
         return HttpResponse()
 
-
+@method_decorator(csrf_exempt, name='dispatch')
 class DeleteFavoriteView(LoginRequiredMixin, View):
     def post(self, request, pk):
         ad = get_object_or_404(Ad, pk=pk)
