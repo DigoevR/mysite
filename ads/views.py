@@ -28,7 +28,7 @@ class AdsListView(OwnerListView):
             queryset = queryset.filter(Q(title__contains=self.search) |
                                         Q(text__contains=self.search) |
                                         Q(tags__name__in=self.search.split(','))
-                                        )
+                                        ).distinct()
         return queryset
 
 
