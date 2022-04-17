@@ -2,13 +2,22 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from ads.owner import OwnerCreateView, OwnerDeleteView, OwnerDetailView, OwnerListView, OwnerUpdateView
-from .models import Ad, Comment
+from .models import Ad, Comment, Favorite
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from .forms import CreateForm, CommentForm
 
 class AdsListView(OwnerListView):
     model = Ad
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        favorites = []
+        if self.request.user.is_authenticated:
+            favorites = self.request.user.favorite_ads.values_list('id', flat=True)
+        context["favorites"] = favorites
+        return context
+    
 
 
 class AdsDetailView(OwnerDetailView):
@@ -79,13 +88,13 @@ class AdsDeleteView(OwnerDeleteView):
 
 class CommentCreateView(LoginRequiredMixin, View):
     template_name = 'ads/ad_detail.html'
-    def post(self, request, ad_id):
-        ad = get_object_or_404(Ad.objects.prefetch_related('comment_set'), pk=ad_id)
+    def post(self, request, pk):
+        ad = get_object_or_404(Ad.objects.prefetch_related('comment_set'), pk=pk)
         form = CommentForm(request.POST)
         if form.is_valid():
             comment = Comment(text=form.cleaned_data.get('comment'), ad=ad, owner=request.user)
             comment.save()
-            return redirect(reverse_lazy('ads:ad_detail', args=[ad_id]))
+            return redirect(reverse_lazy('ads:ad_detail', args=[pk]))
         else:
             context = {'ad': ad, 'form': form, 'comments': ad.comment_set}
             return render(request, self.template_name, context)
@@ -98,3 +107,17 @@ class CommentDeleteView(OwnerDeleteView):
     def get_success_url(self):
         ad = self.object.ad
         return reverse_lazy('ads:ad_detail', args=[ad.id])
+
+
+class AddFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        ad = get_object_or_404(Ad, pk=pk)
+        favorite, created = Favorite.objects.get_or_create(ad=ad, user=request.user)
+        return HttpResponse()
+
+
+class DeleteFavoriteView(LoginRequiredMixin, View):
+    def post(self, request, pk):
+        ad = get_object_or_404(Ad, pk=pk)
+        Favorite.objects.filter(ad=ad, user=request.user).delete()
+        return HttpResponse()
